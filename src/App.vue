@@ -2,8 +2,8 @@
 #app
   header
     h1 Flexbox
-    span(v-if="!isChrome") 配合chrome食用更佳
-  main
+    span(v-if="!isChrome&&isPC") 配合chrome食用更佳
+  main(v-if="isPC")
     .opera-wrapper
       .header 容器属性
         p.reset
@@ -34,6 +34,8 @@
       .content(:style="operaAttr")
         template(v-for="(item, index) in previewItemCount")
           PreItem(:key="index" :indexNum="index")
+  .pc-tip(v-if="!isPC")
+    h1 请使用PC
   footer
     a.github-link(href="https://github.com/kelrvins/flexbox") @github
 </template>
@@ -206,6 +208,9 @@ export default class App extends Vue {
   get isChrome(): boolean {
     const userAgent = navigator.userAgent
     return userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1
+  }
+  get isPC(): boolean {
+    return !(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent))
   }
   operaClick(e: any): void {
     if (e.target.className.indexOf("radio") !== -1) {
@@ -474,6 +479,12 @@ body {
         }
       }
     }
+  }
+  .pc-tip {
+    text-align: center;
+    color: $mainColor;
+    height: 300px;
+    line-height: 300px;
   }
   footer {
     text-align: center;
