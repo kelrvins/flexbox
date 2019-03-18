@@ -37,7 +37,7 @@
   .pc-tip(v-if="!isPC")
     h1 请使用PC
   footer
-    a.github-link(href="https://github.com/kelrvins/flexbox") @github
+    a.github-link(href="https://github.com/kelrvins/flexbox" target="_blank") @github
 </template>
 
 <script lang="ts">
