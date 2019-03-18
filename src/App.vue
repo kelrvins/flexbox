@@ -2,6 +2,7 @@
 #app
   header
     h1 Flexbox
+    span(v-if="!isChrome") 配合chrome食用更佳
   main
     .opera-wrapper
       .header 容器属性
@@ -33,6 +34,8 @@
       .content(:style="operaAttr")
         template(v-for="(item, index) in previewItemCount")
           PreItem(:key="index" :indexNum="index")
+  footer
+    a.github-link(href="https://github.com/kelrvins/flexbox") @github
 </template>
 
 <script lang="ts">
@@ -200,7 +203,11 @@ export default class App extends Vue {
     "align-items": "stretch"
   };
   previewItemCount: number = 4;
-  operaClick(e: any): any {
+  get isChrome(): boolean {
+    const userAgent = navigator.userAgent
+    return userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1
+  }
+  operaClick(e: any): void {
     if (e.target.className.indexOf("radio") !== -1) {
       const dataset: IDataSet = e.target.dataset;
       this.$set(this.operaAttr, dataset.title, dataset.ele);
@@ -244,6 +251,7 @@ body {
   header {
     height: 80px;
     background-color: #252525;
+    position: relative;
     h1 {
       font-size: 40px;
       height: 80px;
@@ -251,6 +259,14 @@ body {
       margin: 0;
       color: #fff;
       text-align: center;
+    }
+    span {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 5px;
+      color: $mainColor;
+      font-size: 12px;
     }
   }
   main {
@@ -458,6 +474,9 @@ body {
         }
       }
     }
+  }
+  footer {
+    text-align: center;
   }
 }
 </style>
