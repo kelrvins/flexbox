@@ -216,6 +216,9 @@ export default class App extends Vue {
     if (e.target.className.indexOf("radio") !== -1) {
       const dataset: IDataSet = e.target.dataset;
       this.$set(this.operaAttr, dataset.title, dataset.ele);
+      if (dataset.title === 'flex-wrap' && dataset.ele === 'nowrap') {
+        this.previewItemCount = 8
+      }
     }
   }
   resetOperaAttr(): void {
@@ -229,7 +232,15 @@ export default class App extends Vue {
   }
   itemCountOpera(isAdd: boolean): void {
     if (isAdd) {
-      this.previewItemCount++;
+      if (this.operaAttr['flex-wrap'] === 'nowrap') {
+        if (this.previewItemCount >= 8) {
+          alert('放不下了别加了')
+        } else {
+          this.previewItemCount++;
+        }
+      } else {
+        this.previewItemCount++;
+      }
     } else {
       if (this.previewItemCount >= 2) {
         this.previewItemCount--;
@@ -367,6 +378,8 @@ body {
       }
     }
     .preview-wrapper {
+      position: relative;
+      z-index: 10;
       width: 700px;
       .preview-header {
         font-size: 14px;
@@ -405,7 +418,7 @@ body {
           padding: 5px;
           box-sizing: border-box;
           margin: 5px;
-          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
           .index-text {
             color: $mainColor;
             font-weight: 600;
@@ -478,6 +491,14 @@ body {
           }
         }
       }
+    }
+  }
+
+  @media screen and (max-width: 1100px) {
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
   }
   .pc-tip {
