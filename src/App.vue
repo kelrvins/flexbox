@@ -33,33 +33,11 @@
       .content(:style="operaAttr")
         template(v-for="(item, index) in previewItemCount")
           PreItem(:key="index" :indexNum="index")
-          //- .item(:key="index")
-          //-   .index-text {{index+1}}
-          //-   .input-fill-x
-          //-     input.proj-content(placeholder="order")
-          //-     label.input-label order
-          //-   .input-fill-x
-          //-     input.proj-content(placeholder="flex-grow")
-          //-     label.input-label flex-grow
-          //-   .input-fill-x
-          //-     input.proj-content(placeholder="flex-shrink")
-          //-     label.input-label flex-shrink
-          //-   .input-fill-x
-          //-     input.proj-content(placeholder="flex-basis")
-          //-     label.input-label flex-basis
-          //-   p.proj-select-title align-self
-          //-   select.proj-select(name="align-self" title="align-self 允许不一样的对齐方式，可覆盖`align-items`属性")
-          //-     option(value="flex-start") flex-start*
-          //-     option(value="flex-end") flex-end
-          //-     option(value="center") center
-          //-     option(value="space-between") space-between
-          //-     option(value="stretch") stretch
-          //-     option(value="auto") auto
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import PreItem from './components/HelloWorld.vue'
+import PreItem from './components/preItem.vue'
 interface IDataSet {
   ele: string;
   title: string;
