@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "clipboard": "^2.0.4",
     "normalize.css": "^8.0.1",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",

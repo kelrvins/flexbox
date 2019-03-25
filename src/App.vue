@@ -9,12 +9,21 @@
         p.reset
           span(@click="resetOperaAttr") 重置
       .content(@click="operaClick")
-        p.tip
-          i *
-          span 默认属性
+        .tip
+          p
+            i *
+            span 默认属性
+          p place-content: &lt;align-content&gt; || &lt;justify-content&gt;;
+          p flex-flow: &lt;flex-direction&gt; || &lt;flex-wrap&gt;;
+        .computed-attr
+          span.copy(:data-clipboard-text="clipboardText") 复制
+          p.computed-attr-text display: flex;
+          p.computed-attr-text(title="place-content: <align-content> || <justify-content>;") place-content: {{operaAttr['align-content']}}  {{operaAttr['justify-content']}};
+          p.computed-attr-text(title="flex-flow: <flex-direction> || <flex-wrap>;") flex-flow: {{operaAttr['flex-direction']}}  {{operaAttr['flex-wrap']}};
+          p.computed-attr-text align-items: {{operaAttr['justify-content']}};
         template(v-for="(item, index) in operaArray")
           .item(:key="item.title")
-            .title(:title="item.title") {{item.title}}
+            .title(:title="item.description") {{item.title}}
             .list
               template(v-for="(ele, _index) in item.list")
                 .radio(
@@ -43,12 +52,14 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import PreItem from './components/preItem.vue'
+import clipboard from 'clipboard'
 interface IDataSet {
   ele: string;
   title: string;
 }
 interface IAttributes {
   title: string;
+  description: string;
   list: IAttributesDeatil[];
 }
 interface IOperaAttr {
@@ -73,6 +84,7 @@ export default class App extends Vue {
   operaArray: IAttributes[] = [
     {
       title: "justify-content",
+      description: "定义了项目在主轴上的对齐方式",
       list: [
         {
           title: "flex-start",
@@ -100,6 +112,7 @@ export default class App extends Vue {
     },
     {
       title: "align-items",
+      description: "定义项目在交叉轴上如何对齐",
       list: [
         {
           title: "stretch",
@@ -127,6 +140,7 @@ export default class App extends Vue {
     },
     {
       title: "align-content",
+      description: "项目只有一根轴线，该属性不起作用",
       list: [
         {
           title: "stretch",
@@ -158,6 +172,7 @@ export default class App extends Vue {
     },
     {
       title: "flex-direction",
+      description: "主轴的方向（即项目的排列方向）",
       list: [
         {
           title: "row",
@@ -180,6 +195,7 @@ export default class App extends Vue {
     },
     {
       title: "flex-wrap",
+      description: "如果一条轴线排不下，如何换行",
       list: [
         {
           title: "nowrap",
@@ -209,8 +225,21 @@ export default class App extends Vue {
     const userAgent = navigator.userAgent
     return userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1
   }
+  get clipboardText(): string {
+    return `display: flex;\nplace-content: ${this.operaAttr['align-content']} ${this.operaAttr['justify-content']};\nflex-flow: ${this.operaAttr['flex-direction']} ${this.operaAttr['flex-wrap']};\nalign-items: ${this.operaAttr['justify-content']};`
+  }
   get isPC(): boolean {
     return !(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent))
+  }
+  get computedAttrText(): string {
+    return '测试'
+  }
+  mounted(): void {
+    const clip: any = new clipboard('.copy')
+    clip.on('success', function (e) {
+      e.clearSelection();
+      alert('复制成功')
+    })
   }
   operaClick(e: any): void {
     if (e.target.className.indexOf("radio") !== -1) {
@@ -313,7 +342,7 @@ body {
     }
     .opera-wrapper {
       position: relative;
-      width: 700px;
+      width: 730px;
       .reset {
         position: absolute;
         top: 3px;
@@ -332,16 +361,36 @@ body {
         .tip {
           position: absolute;
           left: 10px;
-          bottom: 10px;
+          top: 390px;
           font-size: 12px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          p {
+            margin: 0 0 5px;
+          }
           i {
             font-size: 18px;
             margin-right: 10px;
             color: $mainColor;
             padding-top: 5px;
+          }
+        }
+        .computed-attr {
+          position: absolute;
+          top: 350px;
+          left: 450px;
+          .copy {
+            line-height: 18px;
+            font-size: 13px;
+            display: inline-block;
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 5px;
+            text-decoration: underline;
+            color: $mainColor;
+          }
+          &-text {
+            margin: 0;
+            line-height: 18px;
+            font-size: 13px;
           }
         }
       }
